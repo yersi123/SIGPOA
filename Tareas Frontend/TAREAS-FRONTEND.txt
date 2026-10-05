@@ -1,0 +1,223 @@
+﻿TAREAS FRONTEND - SIGPOA
+
+1. FASE 0 - CONFIGURACIÓN BASE
+[X] 0.1 Crear variables de entorno (.env.local y .env.example)
+  [ ] Crear .env.local con VITE_API_BASE_URL=http://127.0.0.1:8123/api
+  [ ] Crear .env.example con la misma variable
+[X] 0.2 Instalar dependencias necesarias
+  [ ] npm i react-router-dom zustand @tanstack/react-query js-cookie @radix-ui/react-alert-dialog
+  [ ] npm i -D @types/js-cookie
+[X] 0.3 Crear AlertDialog base (src/components/ui/alert-dialog.tsx)
+  [ ] Crear archivo con estilos Radix + Tailwind + animaciones + backdrop-blur-sm
+[X] 0.4 Componentes modales reutilizables (src/components/common/)
+  [ ] FormDialog.tsx (con warnOnUnsavedChanges, dirty-check, discard confirm)
+  [ ] ConfirmDialog.tsx (variantes default/warning/danger/info/success, iconos, loading)
+  [ ] DeleteConfirmDialog.tsx (destructivo, irreversible, cierra + toast en 409)
+  [ ] ViewDialog.tsx (solo lectura, secciones, responsive)
+  [ ] ActionConfirmDialog.tsx (acciones críticas negocio)
+[X] 0.5 Tipos TypeScript (src/types/)
+  [ ] common.ts (ApiResponse, PaginatedResponse, Meta, ValidationError, ApiErrorResponse)
+  [ ] auth.ts (User, Rol, Unidad, LoginRequest, LoginResponse, AuthMe)
+  [ ] entidad.ts, unidad.ts, partida.ts, actividad.ts, gasto.ts, proveedor.ts, contratacion.ts, organizacion.ts, propuesta.ts, gestion.ts, reporte.ts, dashboard.ts
+[X] 0.6 Cliente HTTP Axios (src/lib/api.ts)
+  [ ] axios.create con baseURL desde VITE_API_BASE_URL
+  [ ] Request interceptor: Authorization Bearer token
+  [ ] Response interceptor: 401/403/404/409/422/429/500 con toasts
+[X] 0.7 Auth Store Zustand (src/stores/auth.store.ts)
+  [ ] Estado user, token, isAuthenticated, isLoading, isInitializing, error
+  [ ] setToken, loadMe, login, logout, clear + persistencia localStorage
+[X] 0.8 Router + Guards (src/router/AppRouter.tsx, src/components/auth/)
+  [ ] ProtectedRoute.tsx (redirige a /login si no autenticado)
+  [ ] RoleGuard.tsx (allowedRoles, redirige a /dashboard si no permitido)
+  [ ] AppRouter.tsx (públicas /login, protegidas + rutas detalle completas :id)
+[X] 0.9 Providers + Bootstrap (src/providers/AppProviders.tsx, src/main.tsx)
+  [ ] QueryClient configurado (staleTime, retry, refetchOnWindowFocus)
+  [ ] Envolver con QueryClientProvider, RouterProvider, Toaster (richColors top-right expand closeButton duration 4000)
+
+2. FASE 1 - AUTENTICACIÓN (SEGURIDAD)
+[X] 1.1 LoginPage.tsx (/login)
+  [ ] Form react-hook-form + zod (email, password, device_name)
+  [ ] Login POST /api/auth/login, loadMe, redirect /dashboard
+  [ ] Errores 401/422/429 + estados loading
+[X] 1.2 Cargar usuario autenticado (loadMe)
+  [ ] GET /api/auth/me tras login y bootstrap
+  [ ] Actualizar store user (rol, unidad)
+[X] 1.3 Logout con confirmación modal
+  [ ] Botón Cerrar sesión con ConfirmDialog (variant default)
+  [ ] POST /api/auth/logout + limpiar estado + redirect /login
+[X] 1.4 Layout + Navegación
+  [ ] AppLayout.tsx protegido
+  [ ] Sidebar.tsx + Header.tsx (shadcn)
+  [ ] Menú dinámico por rol (admin/responsable/control_social)
+  [ ] Mostrar usuario/rol/email
+
+3. FASE 2 - DASHBOARD
+[X] 2.1 DashboardPage.tsx (/dashboard)
+  [ ] Resumen GET /api/dashboard/resumen
+  [ ] Por Unidad, Por Organización, Alertas
+  [ ] Gráficos recharts + Skeletons + empty states
+  [ ] KPIs reales (funciones PostgreSQL)
+
+4. FASE 3 - GESTIONES
+[X] 3.1 Listado/Detalle Gestiones
+  [ ] GestionesPage.tsx (/gestiones) - paginado GET /api/gestiones
+  [ ] GestionDetallePage.tsx (/gestiones/:id) - página detalle (acceso directo URL)
+[X] 3.2 Cerrar Gestión (modal crítico)
+  [ ] Botón solo administrador con ActionConfirmDialog (variant warning, irreversible)
+  [ ] POST /api/gestiones/:id/cerrar, errores 422 P0001
+
+5. FASE 4 - ENTIDADES
+[X] 4.1 EntidadesPage.tsx (/entidades)
+   [X] Tabla, filtros q/tipo, paginado, visibilidad por rol
+[X] 4.2 Crear Entidad (FormDialog)
+  [ ] FormDialog title 'Nueva Entidad', maxWidth md, react-hook-form+zod
+[X] POST /api/entidades, éxito toast + cerrar + refetch, errores 422 en modal
+[X] 4.3 Editar Entidad (FormDialog + prefill)
+   [X] PUT /api/entidades/:id, warnOnUnsavedChanges
+[X] 4.4 Ver Entidad (ViewDialog + híbrido)
+   [X] ViewDialog desde listado (sin cambiar URL)
+   [X] EntidadDetallePage.tsx (/entidades/:id) acceso directo URL
+   [X] Mostrar datos + unidades anidadas
+[X] 4.5 Eliminar Entidad (DeleteConfirmDialog)
+  [X] DeleteConfirmDialog itemName + resourceLabel, DELETE 204, 409 cierra modal + toast error
+
+6. FASE 5 - UNIDADES
+[X] 5.1 CRUD Unidades (/unidades)
+  [X] Listado con filtro entidad_id
+  [X] Crear/Editar FormDialog (entidad_id select)
+  [X] Ver ViewDialog + UnidadDetallePage.tsx (/unidades/:id)
+  [X] Eliminar DeleteConfirmDialog
+
+7. FASE 6 - PARTIDAS PRESUPUESTARIAS
+[X] 6.1 CRUD Partidas (/partidas)
+  [X] Listado q/prefijo
+  [X] Crear/Editar FormDialog (codigo 5-6 dígitos), errores 422 modal
+  [X] Ver ViewDialog + PartidaDetallePage.tsx (/partidas/:id)
+  [X] Eliminar DeleteConfirmDialog
+
+8. FASE 7 - PROVEEDORES
+[X] 7.1 CRUD Proveedores (/proveedores)
+  [X] Listado q (nombre o NIT)
+  [X] Crear/Editar FormDialog (nit unique)
+  [X] Ver ViewDialog + ProveedorDetallePage.tsx (/proveedores/:id)
+  [X] Eliminar DeleteConfirmDialog
+
+9. FASE 8 - ORGANIZACIONES
+[X] 8.1 CRUD Organizaciones (/organizaciones)
+  [X] Listado filtro tipo (case-insensitive)
+  [X] Crear/Editar FormDialog (normalización tipo, personeria_juridica unique)
+  [X] Ver ViewDialog + OrganizacionDetallePage.tsx (/organizaciones/:id)
+  [X] Eliminar DeleteConfirmDialog (409 con propuestas)
+
+10. FASE 9 - ACTIVIDADES (POA)
+[X] 9.1 CRUD Actividades (/actividades)
+  [X] Listado filtros gestion_id/unidad_id/partida_id/organizacion_id
+  [X] Crear/Editar FormDialog lg (selects dependientes, monto_programado >=0)
+  [X] Ver ViewDialog xl + datos ejecución (v_ejecucion_actividad)
+  [X] ActividadDetallePage.tsx (/actividades/:id) + ejecucion
+  [X] Eliminar DeleteConfirmDialog
+
+11. FASE 10 - GASTOS
+[X] 10.1 Gestión Gastos (actividades/:id/gastos o listado)
+  [X] Listado por actividad
+  [X] Registrar Gasto FormDialog (actividad_id readonly, proveedor nullable, fecha, monto>0, detalle)
+    [X] Nota: no editable (eliminar+registrar), sp_registrar_gasto
+    [X] R4 gestión cerrada → 422 en modal
+  [X] Eliminar Gasto DeleteConfirmDialog (explica no editable)
+  [X] Permisos admin/responsable, control_social sin acciones
+  [!] DISCREPANCIA 10.3: el backend NO permite al responsable. GastoPolicy::create
+      delega en puedeCrear() = esAdministrador(). Verificado: POST /gastos con
+      token de responsable → 403. La UI muestra "Registrar gasto" solo a
+      administrador (decisión del usuario). La línea queda [X] con esta salvedad.
+  [!] NOTA: el listado de gastos no pagina. GastoController::index responde
+      ok(GastoResource::collection($gastos)) con un get() simple, sin meta de
+      Paginador, así que no se reutiliza useListadoRecurso: hook propio
+      useGastosActividad que cuenta la lista en el cliente.
+  [!] NOTA: no existe listado global de gastos ni GET /gastos/{id}. Solo
+      GET /actividades/{id}/gastos. Por eso /gastos pide primero una actividad
+      (en la query ?actividad=) y reutiliza el mismo panel que el detalle de la
+      actividad.
+
+12. FASE 11 - CONTRATACIONES
+[!] 11.1 Contrataciones (/contrataciones) — SOLO LECTURA Y ALTA
+  [X] Listado filtros actividad_id/estado/proveedor_id
+  [X] Crear FormDialog lg (validación fechas)
+  [X] Ver ViewDialog + ContratacionDetallePage.tsx (/contrataciones/:id)
+  [ ] Crear/Editar FormDialog lg  → IMPOSIBLE: PUT /contrataciones/{id} → 405
+        ("Supported methods: GET, HEAD"). La API no expone update.
+  [ ] Eliminar DeleteConfirmDialog → IMPOSIBLE: DELETE /contrataciones/{id} → 405.
+        No existe ContratacionController::destroy ni ruta de borrado.
+  [!] DISCREPANCIA 11.1: el enunciado pide CRUD, pero el backend solo ofrece
+      Create + Read + cambio de estado. Verificado con curl en los 5 métodos.
+      Decisión del usuario: implementar solo lo que la API soporta.
+[X] 11.2 Cambiar Estado (ActionConfirmDialog warning)
+  [X] Transición solicitud→cotizacion→adjudicada, R7, errores 422 modal
+  [!] El trigger es de avance estricto y unidireccional:bidireccional no.
+      "adjudicada -> solicitud" → 422 "Cambio de estado no permitido en
+      contrataciones: adjudicada -> solicitud". Por eso la UI solo ofrece el
+      siguiente estado (siguienteEstadoContratacion) y oculta el botón en
+      adjudicada, en vez de exponer un selector que solo daría 422.
+[X] 11.3 Adjudicar (ActionConfirmDialog success)
+  [X] POST /api/contrataciones/:id/adjudicar (desde cotizacion), R7
+  [!] El paso a adjudicada va por /adjudicar (sp_adjudicar_contratacion), NO
+      por el PATCH de estado, aunque el PATCH también lo permita. Verificado:
+      /adjudicar fija fecha_adjudicacion y rejects reintentos con
+      "Solo se puede adjudicar una contratación en estado cotizacion".
+
+13. FASE 12 - PROPUESTAS PARTICIPATIVAS
+[!] 12.1 Propuestas (/propuestas) — SOLO LECTURA Y ALTA
+  [X] Listado filtros estado/organizacion_id/gestion_id
+  [X] Crear FormDialog lg
+  [X] Ver ViewDialog + PropuestaDetallePage.tsx (/propuestas/:id)
+  [ ] Crear/Editar FormDialog lg  → IMPOSIBLE: PUT /propuestas/{id} → 405.
+  [ ] Eliminar DeleteConfirmDialog → IMPOSIBLE: DELETE /propuestas/{id} → 405.
+        No existe PropuestaController::destroy.
+  [!] DISCREPANCIA 12.1: mismo caso que 11.1. La API no expone update ni
+      destroy sobre propuestas. Decisión del usuario: solo lo que la API soporta.
+[X] 12.2 Cambiar Estado (ActionConfirmDialog warning)
+  [X] Flujo propuesto→aprobado→en_ejecucion→concluido (R5/R9), requiere actividad_id+monto al aprobar
+  [!] R5 confirmado: sin saltos ni retrocesos. "propuesto -> concluido" → 422
+      "Cambio de estado no permitido: propuesto -> concluido".
+  [!] Al aprobar sin datos → 422 "Para aprobar una propuesta se requiere
+      actividad del POA y monto asignado mayor a cero". Por eso el paso a
+      'aprobado' abre un FormDialog y el resto un ActionConfirmDialog simple.
+  [!] REGLA EXTRA (R9, no prevista en el enunciado): la suma de los montos
+      asignados a una actividad no puede superar su monto_programado.
+      Verificado: aprobar 50000 contra la actividad 1 (que ya tenía 150000 de
+      150000 programados) → 422 "Los montos asignados a la actividad 1 no
+      pueden superar lo programado: 200000.00 Bs asignados de 150000.00 Bs
+      programados". La UI calcula el margen libre (montoDisponible en
+      useAccionesPropuesta) y avisa/deshabilita en vez de dejar un 422 sin salida.
+  [!] En los avances que no son 'aprobado' NO se envían actividad_id ni monto.
+      Si se enviaran como null, sp_cambiar_estado_propuesta los tomaría como el
+      nuevo valor y borraría la imputación ya hecha.
+
+14. FASE 13 - REPORTES
+[ ] 13.1 Reporte Ejecución (/reportes/ejecucion)
+  [ ] Filtros formato pdf|excel, gestion_id
+  [ ] Botones Descargar PDF/Excel con loading + toast
+  [ ] Descarga binaria, visible todos roles
+[ ] 13.2 Reporte Organizaciones (/reportes/organizaciones)
+  [ ] Mismos filtros + descarga binaria
+
+15. FASE 14 - UX, ESTADOS Y MODALES
+[ ] 14.1 Estados carga/vacíos
+  [ ] Skeletons, empty states, loading botones (spinner+texto), disable doble envío
+[ ] 14.2 Validación Formularios en Modales
+  [ ] react-hook-form+zod, mapear 422 por campo + Alert global
+[ ] 14.3 Confirmaciones/Actualizaciones/Feedback
+  [ ] Eliminaciones DeleteConfirmDialog, éxitos toast + cierre modal, errores globales toast (cerrar modal), dirty-check implementado
+[ ] 14.4 Paginación/Filtros/Ordenamiento
+  [ ] meta backend, filtros URL, reset página al cambiar filtros
+[ ] 14.5 Diseño Responsive/Accesibilidad
+  [ ] max-h-[90vh]+scroll, z-50, focus trap, ESC, overlay configurable, contraste
+
+16. FASE 15 - VERIFICACIÓN FINAL (QA)
+[ ] 15.1 Seguridad por Roles
+  [ ] admin/responsable/control_social, 401/403, UI oculta acciones
+[ ] 15.2 Reglas Negocio (422/409)
+  [ ] R4/R5/R7/R9, P0001→422, duplicados/RESTRICT→409
+[ ] 15.3 Integridad y Build
+  [ ] npm run build (TS sin errores), npm run lint (oxlint)
+[ ] 15.4 Smoke Test E2E
+  [ ] Login 3 usuarios, CRUD modales, confirmaciones críticas, reportes, logout

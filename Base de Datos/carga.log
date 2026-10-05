@@ -1,0 +1,257 @@
+﻿CREATE EXTENSION
+CREATE FUNCTION
+CREATE FUNCTION
+DROP TABLE
+psql.exe : psql:01 tables.sql:7: NOTICE:  la tabla «propuestas_participativas» no existe, omitiendo
+En línea: 1 Carácter: 312
++ ... F8'; $out = & psql "postgresql://postgres@127.0.0.1:5432/Gesti%C3%B3n ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (psql:01 tables....iste, omitiendo:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+psql:01 tables.sql:8: NOTICE:  la tabla «contrataciones» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:9: NOTICE:  la tabla «gastos» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:10: NOTICE:  la tabla «actividades» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:11: NOTICE:  la tabla «proveedores» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:12: NOTICE:  la tabla «organizaciones» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:13: NOTICE:  la tabla «partidas» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:14: NOTICE:  la tabla «gestiones» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:15: NOTICE:  la tabla «usuarios» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:16: NOTICE:  la tabla «unidades» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:17: NOTICE:  la tabla «entidades» no existe, omitiendo
+DROP TABLE
+psql:01 tables.sql:18: NOTICE:  la tabla «roles» no existe, omitiendo
+DROP TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_roles_updated_at» para la relación «roles» no existe, omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_entidades_updated_at» para la relación «entidades» no existe, 
+omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_unidades_updated_at» para la relación «unidades» no existe, omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_usuarios_updated_at» para la relación «usuarios» no existe, omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_gestiones_updated_at» para la relación «gestiones» no existe, 
+omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_partidas_updated_at» para la relación «partidas» no existe, omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_organizaciones_updated_at» para la relación «organizaciones» no 
+existe, omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_proveedores_updated_at» para la relación «proveedores» no existe, 
+omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_actividades_updated_at» para la relación «actividades» no existe, 
+omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_gastos_updated_at» para la relación «gastos» no existe, omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_contrataciones_updated_at» para la relación «contrataciones» no 
+existe, omitiendo
+psql:06 triggers.sql:20: NOTICE:  “trigger” «trg_propuestas_participativas_updated_at» para la relación 
+«propuestas_participativas» no existe, omitiendo
+DO
+CREATE FUNCTION
+psql:06 triggers.sql:41: NOTICE:  “trigger” «trg_gastos_validar» para la relación «gastos» no existe, omitiendo
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+psql:06 triggers.sql:69: NOTICE:  “trigger” «trg_propuestas_estado» para la relación «propuestas_participativas» no 
+existe, omitiendo
+DROP TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+psql:06 triggers.sql:104: NOTICE:  “trigger” «trg_contrataciones_estado» para la relación «contrataciones» no existe, 
+omitiendo
+CREATE TRIGGER
+CREATE FUNCTION
+DROP TRIGGER
+psql:06 triggers.sql:141: NOTICE:  “trigger” «trg_propuestas_monto» para la relación «propuestas_participativas» no 
+existe, omitiendo
+CREATE TRIGGER
+INSERT 0 3
+INSERT 0 1
+INSERT 0 3
+INSERT 0 3
+INSERT 0 2
+INSERT 0 5
+INSERT 0 4
+INSERT 0 3
+INSERT 0 5
+INSERT 0 8
+INSERT 0 3
+INSERT 0 4
+DO
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+COMMENT
+COMMENT
+COMMENT
+CREATE PROCEDURE
+CREATE PROCEDURE
+CREATE PROCEDURE
+CREATE PROCEDURE
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+ id |          nombre           |      email      |      rol      | unidad_id 
+----+---------------------------+-----------------+---------------+-----------
+  1 | Administrador del Sistema | admin@sigpoa.bo | administrador |         3
+(1 row)
+
+ actividad_id |                objetivo                | monto_programado | monto_ejecutado |   saldo   | porcentaje_ejecucion | sobreejecutada 
+--------------+----------------------------------------+------------------+-----------------+-----------+----------------------+----------------
+            1 | Construcción de cancha polifuncional   |        150000.00 |        83000.00 |  67000.00 |                55.33 | f
+            2 | Mejoramiento de calles Villa Esperanza |        200000.00 |        80000.00 | 120000.00 |                40.00 | f
+            3 | Capacitación a organizaciones sociales |         30000.00 |        12000.00 |  18000.00 |                40.00 | f
+            4 | Alimentación complementaria escolar    |         60000.00 |        45000.00 |  15000.00 |                75.00 | f
+            5 | Equipamiento informático municipal     |         45000.00 |        48000.00 |  -3000.00 |               106.67 | t
+(5 rows)
+
+ id |   fecha    |  monto   |          detalle           |         proveedor          
+----+------------+----------+----------------------------+----------------------------
+  1 | 2026-03-10 | 45000.00 | Anticipo de obra           | Constructora Andina S.R.L.
+  2 | 2026-05-20 | 38000.00 | Segundo desembolso de obra | Constructora Andina S.R.L.
+(2 rows)
+
+ id |       nombre       | tipo | representante 
+----+--------------------+------+---------------
+  1 | OTB Barrio Central | OTB  | Juan Pérez
+(1 row)
+
+ id |           organizacion           |                 titulo                 | monto_asignado |    estado    
+----+----------------------------------+----------------------------------------+----------------+--------------
+  1 | OTB Barrio Central               | Cancha polifuncional zona central      |      150000.00 | en_ejecucion
+  2 | Junta Vecinal Villa Esperanza    | Mejoramiento de calles Villa Esperanza |      200000.00 | aprobado
+  3 | Sindicato de Transporte Libertad | Capacitación en seguridad vial         |           0.00 | propuesto
+  4 | Capitanía Guaraní Zona Norte     | Alimentación complementaria escolar    |       60000.00 | concluido
+(4 rows)
+
+ presupuesto_total | total_ejecutado |   saldo   | porcentaje_ejecucion | actividades_sobreejecutadas 
+-------------------+-----------------+-----------+----------------------+-----------------------------
+         485000.00 |       268000.00 | 217000.00 |                55.26 |                           1
+(1 row)
+
+                 unidad                  | monto_programado | monto_ejecutado |   saldo   | porcentaje_ejecucion 
+-----------------------------------------+------------------+-----------------+-----------+----------------------
+ Secretaría de Administración y Finanzas |         45000.00 |        48000.00 |  -3000.00 |               106.67
+ Secretaría de Desarrollo Humano         |         90000.00 |        57000.00 |  33000.00 |                63.33
+ Secretaría de Obras Públicas            |        350000.00 |       163000.00 | 187000.00 |                46.57
+(3 rows)
+
+         organizacion          |      tipo       | monto_programado | monto_ejecutado | porcentaje_ejecucion 
+-------------------------------+-----------------+------------------+-----------------+----------------------
+ OTB Barrio Central            | OTB             |        150000.00 |        83000.00 |                55.33
+ Junta Vecinal Villa Esperanza | junta_vecinal   |        200000.00 |        80000.00 |                40.00
+ Capitanía Guaraní Zona Norte  | pueblo_indigena |         60000.00 |        45000.00 |                75.00
+(3 rows)
+
+ actividad_id |              objetivo              | monto_programado | monto_ejecutado | exceso  
+--------------+------------------------------------+------------------+-----------------+---------
+            5 | Equipamiento informático municipal |         45000.00 |        48000.00 | 3000.00
+(1 row)
+
+BEGIN
+INSERT 0 1
+UPDATE 1
+INSERT 0 1
+DO
+psql:10 crud basico.sql:72: NOTICE:  Gasto registrado con id 9
+INSERT 0 1
+DO
+CALL
+DELETE 1
+DELETE 1
+DELETE 1
+DELETE 1
+ROLLBACK
