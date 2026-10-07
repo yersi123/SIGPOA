@@ -1,0 +1,31 @@
+# Dependencias
+node_modules/
+backend/vendor/
+
+# Build / salidas
+dist/
+build/
+target/
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Editores / IDE
+.vscode/
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Comprimidos
+*.zip
+
+# SQLite local
+*.sqlite
