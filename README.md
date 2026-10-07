@@ -30,6 +30,8 @@ En muchas entidades la gestión del POA se realiza en hojas de cálculo dispersa
 | `responsable` | Gestiona el POA y la ejecución de su unidad. |
 | `control_social` | Consulta y fiscalización en **modo lectura**. |
 
+El detalle de la regla R8 (qué puede hacer cada rol, recurso por recurso) está en [`Documentacion/MATRIZ-ROLES.md`](Documentacion/MATRIZ-ROLES.md).
+
 ## Stack tecnológico
 
 **Frontend**
