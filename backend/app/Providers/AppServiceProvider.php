@@ -89,6 +89,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('adjudicar-contratacion', fn (Usuario $usuario) => $usuario->esAdministrador());
         Gate::define('cambiar-estado-propuesta', fn (Usuario $usuario) => $usuario->esAdministrador());
         Gate::define('cerrar-gestion', fn (Usuario $usuario) => $usuario->esAdministrador());
+        Gate::define('abrir-gestion', fn (Usuario $usuario) => $usuario->esAdministrador());
     }
 
     /**

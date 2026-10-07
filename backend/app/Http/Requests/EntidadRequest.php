@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Tarea de la seccion 3: validar el alta y la modificacion de entidad.
@@ -24,7 +25,12 @@ class EntidadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => ['required', 'string', 'max:150'],
+            'nombre' => [
+                'required',
+                'string',
+                'max:150',
+                Rule::unique('entidades', 'nombre')->ignore($this->route('entidad')),
+            ],
             'tipo' => ['required', 'string', 'in:gobernacion,municipio,ministerio,unidad_educativa,otro'],
             'departamento' => ['required', 'string', 'max:50'],
             'municipio' => ['nullable', 'string', 'max:80'],
@@ -38,6 +44,7 @@ class EntidadRequest extends FormRequest
     {
         return [
             'codigo.regex' => 'El codigo debe tener 5 o 6 digitos, segun el CHECK ck_partidas_codigo.',
+            'nombre.unique' => 'Ya existe una entidad con ese nombre.',
         ];
     }
 }

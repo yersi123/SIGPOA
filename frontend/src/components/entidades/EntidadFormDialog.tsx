@@ -115,8 +115,8 @@ export function EntidadFormDialog({
 
     try {
       const respuesta = esEdicion
-        ? await api.put(`/entidades/${entidad.id}`, payload)
-        : await api.post('/entidades', payload)
+        ? await api.put(`/entidades/${entidad.id}`, payload, { skipGlobalToast: true })
+        : await api.post('/entidades', payload, { skipGlobalToast: true })
 
       onSaved(respuesta.data.data as Entidad)
     } catch (error: unknown) {

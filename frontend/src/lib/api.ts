@@ -3,6 +3,14 @@ import { toast } from 'sonner'
 
 import { EVENTO_SESION_EXPIRADA } from '@/stores/auth.constants'
 
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    skipGlobalToast?: boolean
+  }
+}
+
+// Permite que un request silencie los toasts globales del interceptor cuando
+// la pantalla que lo dispara ya pinta el error (campo o alerta del formulario).
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8123/api'
 
 export const api = axios.create({
@@ -31,6 +39,7 @@ api.interceptors.response.use(
   (error) => {
     const status = error?.response?.status
     const data = error?.response?.data
+    const sinToastGlobal = Boolean(error?.config?.skipGlobalToast)
 
     if (status === 401) {
       if (!isRedirectingToLogin) {
@@ -49,36 +58,38 @@ api.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    if (status === 403) {
+    if (status === 403 && !sinToastGlobal) {
       toast.error(data?.message || 'No tienes permiso para realizar esta acción')
       return Promise.reject(error)
     }
 
-    if (status === 404) {
+    if (status === 404 && !sinToastGlobal) {
       toast.warning(data?.message || 'Recurso no encontrado')
       return Promise.reject(error)
     }
 
-    if (status === 409) {
+    if (status === 409 && !sinToastGlobal) {
       toast.error(data?.message || 'Conflicto con el estado del recurso')
       return Promise.reject(error)
     }
 
-    if (status === 422) {
+    if (status === 422 && !sinToastGlobal) {
       const message = data?.message || 'Error de validación'
       toast.error(message)
       return Promise.reject(error)
     }
 
-    if (status === 429) {
+    if (status === 429 && !sinToastGlobal) {
       toast.warning('Demasiados intentos. Espera un minuto antes de volver a intentarlo.')
       return Promise.reject(error)
     }
 
-    if (status === 500) {
+    if (status === 500 && !sinToastGlobal) {
       toast.error('Ocurrió un error interno. Inténtalo más tarde.')
       return Promise.reject(error)
     }
+
+    if (sinToastGlobal) return Promise.reject(error)
 
     const message = data?.message || error?.message || 'Error inesperado'
     toast.error(message)

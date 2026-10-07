@@ -46,10 +46,16 @@ Route::middleware('auth:sanctum')->group(function (): void {
     });
 
     /*
-    | Tarea 3.3: gestiones. Solo el administrador cierra (sp_cerrar_gestion).
+    | Tarea 3.3: gestiones. El administrador crea, abre y cierra.
     */
     Route::get('/gestiones', [GestionController::class, 'index'])->name('gestiones.index');
+    Route::post('/gestiones', [GestionController::class, 'store'])
+        ->middleware('rol:administrador')
+        ->name('gestiones.store');
     Route::get('/gestiones/{gestion}', [GestionController::class, 'show'])->name('gestiones.show');
+    Route::post('/gestiones/{gestion}/abrir', [GestionController::class, 'abrir'])
+        ->middleware('rol:administrador')
+        ->name('gestiones.abrir');
     Route::post('/gestiones/{gestion}/cerrar', [GestionController::class, 'cerrar'])
         ->middleware('rol:administrador')
         ->name('gestiones.cerrar');

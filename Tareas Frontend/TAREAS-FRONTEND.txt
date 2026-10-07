@@ -58,13 +58,49 @@
   [ ] Gráficos recharts + Skeletons + empty states
   [ ] KPIs reales (funciones PostgreSQL)
 
-4. FASE 3 - GESTIONES
-[X] 3.1 Listado/Detalle Gestiones
-  [ ] GestionesPage.tsx (/gestiones) - paginado GET /api/gestiones
-  [ ] GestionDetallePage.tsx (/gestiones/:id) - página detalle (acceso directo URL)
-[X] 3.2 Cerrar Gestión (modal crítico)
-  [ ] Botón solo administrador con ActionConfirmDialog (variant warning, irreversible)
-  [ ] POST /api/gestiones/:id/cerrar, errores 422 P0001
+4. FASE 3 - GESTIONES (alta, activacion, cierre y consulta)
+[X] NOTA: la API expone 5 endpoints: GET /api/gestiones (paginado, filtro
+    estado), GET /api/gestiones/{id}, POST /api/gestiones (alta, nace cerrada),
+    POST /api/gestiones/{id}/abrir y POST /api/gestiones/{id}/cerrar. Todo lo que
+    cambia estado es exclusivo del administrador. Una gestion nueva SIEMPRE nace
+    cerrada: para dejarla activa se usa "Activar", y solo cuando no hay otra
+    abierta (una sola gestion abierta a la vez). No hay PUT/DELETE.
+[X] 3.1 Listado Gestiones (GestionesPage.tsx /gestiones)
+  [X] Paginado GET /api/gestiones, tabla: Anio (link al detalle), Estado, Creada
+  [X] Filtro por estado (todas/abiertas/cerradas) con CampoSelect
+  [X] Badge de estado abierta/cerrada (EstadoBadge), visible para los 3 roles
+  [X] Acciones por fila: Ver (ViewDialog, siempre), Activar (solo admin y si
+      esta cerrada, deshabilitado si hay otra abierta) y Cerrar (solo admin y si
+      esta abierta)
+[X] 3.2 Detalle Gestion (GestionDetallePage.tsx /gestiones/:id)
+  [X] Acceso directo GET /api/gestiones/:id; id invalido o 404 con boton
+      "Volver al listado"
+  [X] Muestra anio, estado, creada/actualizada + listado paginado de las
+      actividades de la gestion (GET /actividades?gestion_id=)
+  [X] Boton "Cerrar gestion" (solo admin y estado abierta)
+[X] 3.3 Cerrar Gestion (GestionCerrarDialog.tsx, modal critico)
+  [X] ActionConfirmDialog variant warning: irreversible, advierte que no se
+      podran registrar gastos ni actividades en gestiones cerradas (R4)
+  [X] POST /api/gestiones/:id/cerrar con isLoading (bloquea doble envio)
+  [X] Exito -> toast + invalidateQueries(['gestiones']) (listado y detalle se
+      refrescan sin recargar la pagina); errores 403/422 (P0001) -> toast propio
+      con skipGlobalToast (un solo mensaje)
+  [X] Oculto para responsable y control social
+[X] 3.4 Crear Gestion (GestionFormDialog.tsx)
+  [X] Boton "Nueva gestion" (solo admin) en el listado; FormDialog maxWidth sm
+  [X] Campo Anio (Input number, rango 2000-2100 como el CHECK ck_gestiones_anio)
+  [X] POST /api/gestiones con skipGlobalToast; el backend fuerza estado cerrada
+  [X] 422 de anio duplicado -> error inline en el campo; 403/otro -> alerta
+  [X] Exito -> invalida ['gestiones'] + cierra + toast (la tabla se refresca sola)
+[X] 3.5 Activar Gestion (GestionAbrirDialog.tsx + hook useGestionAbierta)
+  [X] Accion "Activar" (solo admin y estado cerrada) en listado y detalle
+  [X] Deshabilitada si hay otra gestion abierta (hook GET /gestiones?estado=abierta)
+  [X] ActionConfirmDialog variant success: advierte que solo una puede estar abierta
+  [X] POST /api/gestiones/:id/abrir con isLoading; 422 con el anio de la abierta
+  [X] Exito -> invalida ['gestiones'] + toast; responsable y control social no la ven
+[!] NOTA: types/gestion.ts declaraba fecha_apertura/fecha_cierre, que el
+    backend no tiene (GestionResource solo expone id, anio, estado, created_at,
+    updated_at). Se eliminan del tipo.
 
 5. FASE 4 - ENTIDADES
 [X] 4.1 EntidadesPage.tsx (/entidades)

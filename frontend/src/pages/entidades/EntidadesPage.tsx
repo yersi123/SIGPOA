@@ -99,16 +99,6 @@ export function EntidadesPage() {
     enabled: entidadEnVista !== null,
   })
 
-  const mutacionGuardar = useMutation({
-    mutationFn: async ({ id, payload }: { id: number | null; payload: Entidad }) => {
-      if (id === null) return (await api.post('/entidades', payload)).data
-      return (await api.put(`/entidades/${id}`, payload)).data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['entidades'] })
-    },
-  })
-
   const datos = consulta.data?.data ?? []
   const meta = consulta.data?.meta
   const totalPaginas = meta?.last_page ?? 1
@@ -126,23 +116,12 @@ export function EntidadesPage() {
     setFormOpen(true)
   }
 
-  const guardar = (entidad: Entidad) => {
-    mutacionGuardar.mutate(
-      { id: entidadEnEdicion?.id ?? null, payload: entidad },
-      {
-        onSuccess: () => {
-          setFormOpen(false)
-          setEntidadEnEdicion(null)
-          toast.success(
-            entidadEnEdicion ? 'Entidad actualizada correctamente.' : 'Entidad creada correctamente.',
-          )
-        },
-        onError: () => {
-          // El 422 lo pinta el propio dialogo; el 403 y el resto, un toast.
-          toast.error('No se pudo guardar la entidad.')
-        },
-      },
-    )
+  const guardar = () => {
+    const eraEdicion = entidadEnEdicion !== null
+    queryClient.invalidateQueries({ queryKey: ['entidades'] })
+    setFormOpen(false)
+    setEntidadEnEdicion(null)
+    toast.success(eraEdicion ? 'Entidad actualizada correctamente.' : 'Entidad creada correctamente.')
   }
 
   const eliminar = useMutation({

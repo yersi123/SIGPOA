@@ -1,8 +1,10 @@
 import type { EstadoContratacion } from '@/types/contratacion'
+import type { EstadoGestion } from '@/types/gestion'
 import type { EstadoPropuesta } from '@/types/propuesta'
 
 /**
- * Etiqueta y color de los estados de contratacion y de propuesta participativa.
+ * Etiqueta y color de los estados de contratacion, propuesta participativa y
+ * gestion.
  *
  * Vive fuera de un componente a proposito: `EstadoBadge` lo importa para pintar
  * el distintivo, y los hooks de cambio de estado lo usan para los textos de los
@@ -20,9 +22,14 @@ export const ESTADOS_GESTIONABLES = {
   aprobado: { etiqueta: 'Aprobado', clase: 'bg-sky-100 text-sky-700 border-sky-200' },
   en_ejecucion: { etiqueta: 'En ejecución', clase: 'bg-amber-100 text-amber-700 border-amber-200' },
   concluido: { etiqueta: 'Concluido', clase: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-} as const satisfies Record<EstadoContratacion | EstadoPropuesta, { etiqueta: string; clase: string }>
+  abierta: { etiqueta: 'Abierta', clase: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
+  cerrada: { etiqueta: 'Cerrada', clase: 'bg-slate-100 text-slate-700 border-slate-200' },
+} as const satisfies Record<
+  EstadoContratacion | EstadoPropuesta | EstadoGestion,
+  { etiqueta: string; clase: string }
+>
 
-export type EstadoGestionable = EstadoContratacion | EstadoPropuesta
+export type EstadoGestionable = EstadoContratacion | EstadoPropuesta | EstadoGestion
 
 /** Texto legible de un estado, para dialogos y botones. */
 export function etiquetaEstado(estado: EstadoGestionable): string {

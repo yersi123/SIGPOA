@@ -26,13 +26,17 @@ export const router = createBrowserRouter([
         path: '/dashboard',
         element: <DashboardPage />,
       },
-      {
+{
         path: '/gestiones',
-        lazy: async () => ({ Component: () => <div className="p-6">Gestiones</div> }),
+        lazy: async () => ({
+          Component: (await import('@/pages/gestiones/GestionesPage')).GestionesPage,
+        }),
       },
       {
         path: '/gestiones/:id',
-        lazy: async () => ({ Component: () => <div className="p-6">Detalle Gestión</div> }),
+        lazy: async () => ({
+          Component: (await import('@/pages/gestiones/GestionDetallePage')).GestionDetallePage,
+        }),
       },
 {
         path: '/entidades',
